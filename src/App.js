@@ -21,7 +21,7 @@ function App() {
       {
         id: new Date().getTime(),
         title: value,
-        checked: true,
+        checked: false,
       },
     ]);
     erase();
@@ -37,6 +37,10 @@ function App() {
     } else if (event.which === ESCAPE_KEY) {
       erase();
     }
+  };
+
+  const onToggle = (todo) => {
+    setTodos(todos.map((obj) => (obj.id === todo.id ? { ...obj, checked: !obj.checked } : obj)));
   };
 
   return (
@@ -56,7 +60,15 @@ function App() {
           {
             todos.map((todo) => (
               <li key={todo.id.toString}>
-                <span className="todo">{todo.title}</span>
+                <span
+                  className={['todo', todo.checked ? 'checked' : ''].join(' ')}
+                  onClick={() => onToggle(todo)}
+                  onKeyPress={() => onToggle(todo)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  {todo.title}
+                </span>
                 <button type="button" className="remove">
                   <MdDelete size={28} />
                 </button>
